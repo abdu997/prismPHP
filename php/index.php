@@ -15,5 +15,3 @@ if($_GET['REQUEST_TYPE'] === "view"){
 } else if($_GET['REQUEST_TYPE'] === "api"){
   print Prism\Router::enable();
 }
-
-// echo file_get_contents("Views/hello_world.php");
