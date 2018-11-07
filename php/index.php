@@ -10,8 +10,9 @@ foreach($folders as $folder){
   }
 }
 include "config.php";
+$response = Prism\Router::enable();
 if($_GET['REQUEST_TYPE'] === "view"){
-  Prism\Router::enable();
+  $response;
 } else if($_GET['REQUEST_TYPE'] === "api"){
-  print Prism\Router::enable();
+  print $response;
 }
