@@ -2,12 +2,12 @@
 
 namespace Controllers;
 
-use Providers;
+use Providers\ExampleProvider;
 
 class ExampleController
 {
   public static function example()
   {
-    return ['status'=>'success', 'result'=>'no'];
+    return ExampleProvider::example();
   }
 }
