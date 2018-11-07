@@ -1,12 +1,12 @@
 <?php
-$index = fopen("../index.php", "c") or die("Unable to open file!");
+$index = fopen("../../index.php", "c") or die("Unable to open file!");
 if(!ftruncate($index, 0)){
   die("\033[31mERR: Truncate Failed\033[0m\n");
 }
 $folders = [
-  '../Providers',
-  '../Prism',
-  '../Controllers',
+  '../../Providers',
+  '../../Prism',
+  '../../Controllers',
 ];
 $app = "<?";
 foreach($folders as $folder){
