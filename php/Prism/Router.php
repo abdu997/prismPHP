@@ -108,20 +108,17 @@ class Router
   public static function errorHandler($errno, $errstr, $errfile, $errline)
   {
     http_response_code(500);
-    if($_SERVER['SERVER_NAME'] === "localhost"){
-      $errmsg = $errstr." Error on line ".$errline." in ".$errfile;
-      print json_encode(
-        [
-          'status' => 'error',
-          'message' => $errmsg
-        ]
-      );
-      error_log($errmsg);
-    } else {
-      $timestamp = Prism\DB::timestamp();
-      $sql = "INSERT INTO php_errors(errno, errstr, errfile, errline, timestamp) VALUES('$errno', '$errstr', '$errfile', '$errline', '$timestamp')";
-      mysqli_query(Prism\DB::connect(), $sql);
-    }
+    $errmsg = $errstr." Error on line ".$errline." in ".$errfile;
+    print json_encode(
+      [
+        'status' => 'error',
+        'message' => $errmsg
+      ]
+    );
+    error_log($errmsg);
+    $timestamp = Prism\DB::timestamp();
+    $sql = "INSERT INTO php_errors(errno, errstr, errfile, errline, timestamp) VALUES('$errno', '$errstr', '$errfile', '$errline', '$timestamp')";
+    mysqli_query(Prism\DB::connect(), $sql);
     exit();
   }
 }
