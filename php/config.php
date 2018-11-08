@@ -1,10 +1,7 @@
 <?php
 //Dependencies
 $dep = [
-  'vendor/twilio-php-master/Twilio/autoload.php',
-  'vendor/PHPMailer/src/Exception.php',
-  'vendor/PHPMailer/src/PHPMailer.php',
-  'vendor/PHPMailer/src/SMTP.php'
+
 ];
 
 //DB
@@ -49,7 +46,7 @@ $api = [
     'route' => 'public/test',
     'callback' => 'ExampleController::example',
     'auth' => ['public'],
-    'REQUEST_METHOD' => 'GET'
+    'REQUEST_METHOD' => 'POST'
   ],
 ];
 $views = [

@@ -37,6 +37,13 @@ class Router
 
   private static function loadDep()
   {
+    array_push(
+      $GLOBALS['dep'],
+      'vendor/twilio-php-master/Twilio/autoload.php',
+      'vendor/PHPMailer/src/Exception.php',
+      'vendor/PHPMailer/src/PHPMailer.php',
+      'vendor/PHPMailer/src/SMTP.php'
+    );
     foreach($GLOBALS['dep'] as $dep){
       require $dep;
     }
