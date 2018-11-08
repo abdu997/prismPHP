@@ -16,6 +16,7 @@ class Router
   {
     session_start();
     DB::sanitize();
+    DB::createErrorLog();
     self::loadDep();
     if(isset(apache_request_headers()['Origin']) && in_array(apache_request_headers()['Origin'], $GLOBALS['allowed_hostnames'])){
       header(

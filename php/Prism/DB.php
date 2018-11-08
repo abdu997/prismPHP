@@ -27,6 +27,20 @@ class DB
     }
   }
 
+  public static function createErrorLog()
+  {
+    $sql = "CREATE TABLE IF NOT EXISTS `php_errors` (
+      `record_id` int(11) NOT NULL AUTO_INCREMENT,
+      `errno` int(11) NOT NULL,
+      `errstr` varchar(100) NOT NULL,
+      `errfile` varchar(100) NOT NULL,
+      `errline` varchar(100) NOT NULL,
+      `timestamp` varchar(30) NOT NULL,
+      PRIMARY KEY (record_id)
+    ) ENGINE=InnoDB DEFAULT CHARSET=latin1";
+    mysqli_query(self::connect(), $sql);
+  }
+
   /**
    * Insantiates the databse function.
    *
