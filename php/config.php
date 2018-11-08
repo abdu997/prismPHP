@@ -1,58 +1,70 @@
 <?php
-//Dependencies
-$dep = [
 
-];
+namespace Prism;
 
-//DB
-$db = [
-  [
-    'condition' => $_SERVER['SERVER_NAME'] === "localhost",
-    'servername' => 'localhost',
-    'username' => 'root',
-    'password' => '',
-    'db' => ''
-  ],
-];
+class Config
+{
+  // PHP backend code folders
+  public static $folders = [
+    'Providers',
+    'Controllers'
+  ];
 
-$timezone = 'America/New_York';
+  //Dependencies
+  public static $dep = [
 
-// Mail
-$logo_url = "";
-$email = "";
-$password = "";
-$from_name = "";
-$host = "";
-$website_url = "";
+  ];
 
-// Twilio
-$sid = "";
-$token = "";
-$number = "";
+  //DB
+  public static $db = [
+    [
+      'condition' => true,
+      'servername' => 'localhost',
+      'username' => 'root',
+      'password' => '',
+      'db' => ''
+    ],
+  ];
 
-// Router
-$allowed_hostnames = [
-  "http://example.com:4000",
-];
-$Access_Control_Allow_Credentials = true;
-$auth_groups = [
-  [
-    'auth_ref' => 'public',
-    'condition' => true,
-  ],
-];
-$api = [
-  [
-    'route' => 'public/test',
-    'callback' => 'ExampleController::example',
-    'auth' => ['public'],
-    'REQUEST_METHOD' => 'POST'
-  ],
-];
-$views = [
-  [
-    'route' => 'public/hello',
-    'filename' => 'hello_world.html',
-    'auth' => ['public'],
-  ]
-];
+  public static $timezone = 'America/New_York';
+
+  // Mail
+  public static $logo_url = "";
+  public static $email = "";
+  public static $password = "";
+  public static $from_name = "";
+  public static $host = "";
+  public static $website_url = "";
+
+  // Twilio
+  public static $sid = "";
+  public static $token = "";
+  public static $number = "";
+
+  // Router
+  public static $allowed_hostnames = [
+    "http://example.com:4000",
+  ];
+  public static $Access_Control_Allow_Credentials = true;
+  public static $auth_groups = [
+    [
+      'auth_ref' => 'public',
+      'condition' => true,
+    ],
+  ];
+  public static $api = [
+    [
+      'route' => 'public/test',
+      'callback' => 'ExampleController::example',
+      'auth' => ['public'],
+      'REQUEST_METHOD' => 'GET'
+    ],
+  ];
+  public static $views = [
+    [
+      'route' => 'public/hello',
+      'filename' => 'hello_world.html',
+      'auth' => ['public'],
+    ]
+  ];
+}
