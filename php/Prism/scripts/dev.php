@@ -4,6 +4,7 @@ if(!ftruncate($index, 0)){
   die("\033[31mERR: Truncate Failed\033[0m\n");
 }
 $app = "<?
+// DEV INDEX
 \$folders = [
   'Providers',
   'Controllers',

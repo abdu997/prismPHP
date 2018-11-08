@@ -8,7 +8,7 @@ $folders = [
   '../../Prism',
   '../../Controllers',
 ];
-$app = "<?";
+$app = "<?// PROD INDEX";
 foreach($folders as $folder){
   foreach(glob($folder."/*.php") as $file){
     $app .= str_replace(["<?php", "<?", "?>"], "", php_strip_whitespace($file));
