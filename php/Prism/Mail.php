@@ -39,7 +39,7 @@ class Mail
         <table style='max-width: 600px; width: 100%; margin-top: 25px;'>
           <tr>
             <td style='background: #2A3F54; height: 75px' align='center'>
-              <img alt='logo' src='".Config::$logo_url."' />
+              <img alt='logo' src='".$GLOBALS['logo_url']."' />
             </td>
           </tr>
           <tr style='height: 500px;'>
@@ -49,7 +49,7 @@ class Mail
               <br/>
               ".self::makeLinksClickable($message)."
               <center>
-                <a target='_blank' style='text-decoration: underline; cursor: pointer;' href='".Config::$website_url."'>
+                <a target='_blank' style='text-decoration: underline; cursor: pointer;' href='".$GLOBALS['website_url']."'>
                   <button style='background: #2A3F54; border: 0; padding: 5px; width: 75px; color: white; margin: 20px 0;'>
                   Got to Intra
                   </button>
@@ -63,13 +63,13 @@ class Mail
     $mail = new PHPMailer(true);
     try {
       $mail->isSMTP();
-      $mail->Host = Config::$host;
+      $mail->Host = $GLOBALS['host'];
       $mail->SMTPAuth = true;
-      $mail->Username = Config::$email;
-      $mail->Password = Config::$password;
+      $mail->Username = $GLOBALS['email'];
+      $mail->Password = $GLOBALS['password'];
       $mail->SMTPSecure = 'tls';
       $mail->Port = 587;
-      $mail->setFrom($mail->Username, Config::$from_name);
+      $mail->setFrom($mail->Username, $GLOBALS['from_name']);
       $mail->addAddress($to, $to);
       $mail->isHTML(true);
       $mail->Subject = $subject;

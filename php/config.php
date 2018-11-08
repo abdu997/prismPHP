@@ -1,70 +1,64 @@
 <?php
+// PHP backend code folders
+$GLOBALS['folders'] =  [
+  'Providers',
+  'Controllers'
+];
 
-namespace Prism;
+//Dependencies
+$GLOBALS['dep'] =  [
 
-class Config
-{
-  // PHP backend code folders
-  public static $folders = [
-    'Providers',
-    'Controllers'
-  ];
+];
 
-  //Dependencies
-  public static $dep = [
+//DB
+$GLOBALS['DB'] =  [
+  [
+    'condition' => $_SERVER['SERVER_NAME'] === "localhost",
+    'servername' => 'localhost',
+    'username' => 'root',
+    'password' => '',
+    'db' => ''
+  ],
+];
 
-  ];
+$GLOBALS['timezone'] =  'America/New_York';
 
-  //DB
-  public static $db = [
-    [
-      'condition' => true,
-      'servername' => 'localhost',
-      'username' => 'root',
-      'password' => '',
-      'db' => ''
-    ],
-  ];
+// Mail
+$GLOBALS['logo_url'] =  "";
+$GLOBALS['email'] =  "";
+$GLOBALS['password'] =  "";
+$GLOBALS['from_name'] =  "";
+$GLOBALS['host'] =  "";
+$GLOBALS['website_url'] =  "";
 
-  public static $timezone = 'America/New_York';
+// Twilio
+$GLOBALS['sid'] =  "";
+$GLOBALS['token'] =  "";
+$GLOBALS['number'] =  "";
 
-  // Mail
-  public static $logo_url = "";
-  public static $email = "";
-  public static $password = "";
-  public static $from_name = "";
-  public static $host = "";
-  public static $website_url = "";
-
-  // Twilio
-  public static $sid = "";
-  public static $token = "";
-  public static $number = "";
-
-  // Router
-  public static $allowed_hostnames = [
-    "http://example.com:4000",
-  ];
-  public static $Access_Control_Allow_Credentials = true;
-  public static $auth_groups = [
-    [
-      'auth_ref' => 'public',
-      'condition' => true,
-    ],
-  ];
-  public static $api = [
-    [
-      'route' => 'public/test',
-      'callback' => 'ExampleController::example',
-      'auth' => ['public'],
-      'REQUEST_METHOD' => 'GET'
-    ],
-  ];
-  public static $views = [
-    [
-      'route' => 'public/hello',
-      'filename' => 'hello_world.html',
-      'auth' => ['public'],
-    ]
-  ];
-}
+// Router
+$GLOBALS['allowed_hostnames'] =  [
+  "http://example.com:4000",
+];
+$GLOBALS['Access_Control_Allow_Credentials'] =  true;
+$GLOBALS['auth_groups'] =  [
+  [
+    'auth_ref' => 'public',
+    'condition' => true,
+  ],
+];
+$GLOBALS['api'] =  [
+  [
+    'route' => 'public/test',
+    'callback' => 'ExampleController::example',
+    'auth' => ['public'],
+    'REQUEST_METHOD' => 'GET'
+  ],
+];
+$GLOBALS['views'] =  [
+  [
+    'route' => 'public/hello',
+    'filename' => 'hello_world.html',
+    'auth' => ['public'],
+  ]
+];

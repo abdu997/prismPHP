@@ -4,7 +4,7 @@ if(!ftruncate($index, 0)){
   die("\033[31mERR: Truncate Failed\033[0m\n");
 }
 include '../../config.php';
-$folders = Prism\Config::$folders;
+$folders = $GLOBALS['folders'];
 array_push($folders, 'Prism');
 $app = "<?// PROD INDEX";
 foreach($folders as $folder){

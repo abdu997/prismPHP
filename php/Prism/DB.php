@@ -19,7 +19,7 @@ class DB
    */
   private function __construct()
   {
-    foreach(Config::$db as $connection){
+    foreach($GLOBALS['DB'] as $connection){
       if($connection['condition']){
         $this->connection = new MySQLi($connection['servername'], $connection['username'], $connection['password'], $connection['db']);
         break;

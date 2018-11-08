@@ -18,18 +18,18 @@ class Router
     DB::sanitize();
     DB::createErrorLog();
     self::loadDep();
-    if(isset(apache_request_headers()['Origin']) && in_array(apache_request_headers()['Origin'], Config::$allowed_hostnames)){
+    if(isset(apache_request_headers()['Origin']) && in_array(apache_request_headers()['Origin'], $GLOBALS['allowed_hostnames'])){
       header(
         "Access-Control-Allow-Origin: ".apache_request_headers()['Origin']
       );
     }
-    date_default_timezone_set(Config::$timezone);
+    date_default_timezone_set($GLOBALS['timezone']);
     if($_GET['REQUEST_TYPE'] === "api"){
       header("Content-type: application/json");
     } else {
       header("Content-type: text/html");
     }
-    header("Access-Control-Allow-Credentials: ".Config::$Access_Control_Allow_Credentials);
+    header("Access-Control-Allow-Credentials: ".$GLOBALS['Access_Control_Allow_Credentials']);
     header_remove("X-Powered-By");
     error_reporting(E_ALL);
     set_error_handler("Prism\Router::errorHandler");
@@ -38,13 +38,13 @@ class Router
   private static function loadDep()
   {
     array_push(
-      Config::$dep,
+      $GLOBALS['dep'],
       'Prism/vendor/twilio-php-master/Twilio/autoload.php',
       'Prism/vendor/PHPMailer/src/Exception.php',
       'Prism/vendor/PHPMailer/src/PHPMailer.php',
       'Prism/vendor/PHPMailer/src/SMTP.php'
     );
-    foreach(Config::$dep as $dep){
+    foreach($GLOBALS['dep'] as $dep){
       require $dep;
     }
   }
@@ -61,7 +61,7 @@ class Router
       http_response_code($route['error_code']);
       exit();
     }
-    foreach(Config::$auth_groups as $auth_group){
+    foreach($GLOBALS['auth_groups'] as $auth_group){
       if(in_array($auth_group['auth_ref'], $route['auth']) && $auth_group['condition']){
         if($_GET['REQUEST_TYPE'] === "api"){
           $callback = call_user_func("Controllers\\".$route['callback']);
@@ -86,7 +86,7 @@ class Router
   public static function checkRouteExists()
   {
     if($_GET['REQUEST_TYPE'] === "api"){
-      foreach(Config::$api as $route){
+      foreach($GLOBALS['api'] as $route){
         if($route['route'] === $_GET['route']){
           if(
             $_SERVER['REQUEST_METHOD'] !== $route['REQUEST_METHOD']
@@ -100,7 +100,7 @@ class Router
         }
       }
     } else if($_GET['REQUEST_TYPE'] === "view"){
-      foreach(Config::$views as $view){
+      foreach($GLOBALS['views'] as $view){
         if($view['route'] === $_GET['route']){
           return $view;
         }

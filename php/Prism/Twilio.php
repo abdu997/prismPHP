@@ -16,11 +16,11 @@ class Twilio
    */
   public static function sendSMS($phone_number, $message, $first_name, $last_name)
   {
-    $client = new Client(Config::$sid, Config::$sid);
+    $client = new Client($GLOBALS['sid'], $GLOBALS['token']);
     $client->messages->create(
       "+1".$phone_number,
       [
-        'from' => Config::$number,
+        'from' => $GLOBALS['number'],
         'body' => "Hello ".$first_name." ".$last_name.", ".$message." -Thawrih Intra",
       ]
     );
