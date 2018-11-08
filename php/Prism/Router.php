@@ -65,7 +65,7 @@ class Router
             return $callback;
           }
         } else if($_GET['REQUEST_TYPE'] === "view"){
-          return require("Views/".$route['filename']);
+          return file_get_contents("Views/".$route['filename']);
         }
       }
     }

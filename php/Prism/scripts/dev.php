@@ -15,12 +15,8 @@ foreach(\$folders as \$folder){
   }
 }
 include 'config.php';
-\$response = Prism\Router::enable();
-if(\$_GET['REQUEST_TYPE'] === 'view'){
-  \$response;
-} else if(\$_GET['REQUEST_TYPE'] === 'api'){
-  print \$response;
-}";
+print Prism\Router::enable();
+";
 
 fwrite($index, $app);
 fclose($index);

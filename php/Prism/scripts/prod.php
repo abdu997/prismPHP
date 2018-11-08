@@ -14,7 +14,8 @@ foreach($folders as $folder){
     $app .= str_replace(["<?php", "<?", "?>"], "", php_strip_whitespace($file));
   }
 }
-$app .= "namespace Prism;include 'config.php';\$response = Router::enable();if(\$_GET['REQUEST_TYPE'] === 'view'){\$response;}elseif(\$_GET['REQUEST_TYPE'] === 'api'){print \$response;}?>";
+$app .= "namespace Prism;include 'config.php';print Router::enable();
+?>";
 fwrite($index, $app);
 fclose($index);
 exit(" \nPHP Compiled Successfully. New index is ready!\n\n");
