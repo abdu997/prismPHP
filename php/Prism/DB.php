@@ -41,6 +41,51 @@ class DB
     mysqli_query(self::connect(), $sql);
   }
 
+  public static function query($sql)
+  {
+    if(mysqli_query(self::connect(), $sql)){
+      return ['status'=>'success'];
+    } else {
+      trigger_error(mysqli_error(self::connect()));
+      return ['status'=>'error', 'result'=> mysqli_error(self::connect())];
+    }
+  }
+
+  public static function insert($sql)
+  {
+    if(mysqli_query(self::connect(), $sql)){
+      return mysqli_insert_id(self::connect());
+    } else {
+      trigger_error(mysqli_error(self::connect()));
+      return ['status'=>'error', 'result'=> mysqli_error(self::connect())];
+    }
+  }
+
+  public static function select($sql)
+  {
+    $result = mysqli_query(self::connect(), $sql);
+    if($result){
+      $output = [];
+      while($row = mysqli_fetch_array($result)){
+        $output[] = $row;
+      }
+      return $output;
+    } else {
+      trigger_error(mysqli_error(self::connect()));
+      return ['status'=>'error', 'result'=> mysqli_error(self::connect())];
+    }
+  }
+
+  public static function update($sql)
+  {
+    if(mysqli_query(self::connect(), $sql)){
+      return ['status'=>'success'];
+    } else {
+      trigger_error(mysqli_error(self::connect()));
+      return ['status'=>'error', 'result'=> mysqli_error(self::connect())];
+    }
+  }
+
   /**
    * Insantiates the databse function.
    *
