@@ -1,9 +1,11 @@
 <?php
-//Libraries
-require "vendor/twilio-php-master/Twilio/autoload.php";
-require 'vendor/PHPMailer/src/Exception.php';
-require 'vendor/PHPMailer/src/PHPMailer.php';
-require 'vendor/PHPMailer/src/SMTP.php';
+//Dependencies
+$dep = [
+  'vendor/twilio-php-master/Twilio/autoload.php',
+  'vendor/PHPMailer/src/Exception.php',
+  'vendor/PHPMailer/src/PHPMailer.php',
+  'vendor/PHPMailer/src/SMTP.php'
+];
 
 //DB
 $db = [

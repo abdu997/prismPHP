@@ -16,6 +16,7 @@ class Router
   {
     session_start();
     DB::sanitize();
+    self::loadDep();
     if(isset(apache_request_headers()['Origin']) && in_array(apache_request_headers()['Origin'], $GLOBALS['allowed_hostnames'])){
       header(
         "Access-Control-Allow-Origin: ".apache_request_headers()['Origin']
@@ -31,6 +32,13 @@ class Router
     header_remove("X-Powered-By");
     error_reporting(E_ALL);
     set_error_handler("Prism\Router::errorHandler");
+  }
+
+  private static function loadDep()
+  {
+    foreach($GLOBALS['dep'] as $dep){
+      require $dep;
+    }
   }
 
   /**
