@@ -37,7 +37,7 @@ class Mail
   public static function enable($to, $subject, $message)
   {
     $message = "
-    <html style='background: ".$GLOBALS['bg_colour']."'>
+    <html style='background: white'>
       <center>
         <table style='max-width: 600px; width: 100%; margin-top: 25px;'>
           <tr>

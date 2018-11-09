@@ -30,7 +30,6 @@ $GLOBALS['password'] =  "";
 $GLOBALS['from_name'] =  "";
 
 $GLOBALS['logo_url'] =  "";
-$GLOBALS['bg_colour'] = "";
 $GLOBALS['primary_colour'] = "";
 $GLOBALS['secondary_colour'] = "";
 
