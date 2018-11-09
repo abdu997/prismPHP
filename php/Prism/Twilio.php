@@ -14,14 +14,14 @@ class Twilio
    * @param  string $phone_number
    * @param  string $message
    */
-  public static function sendSMS($phone_number, $message, $first_name, $last_name)
+  public static function sendSMS($phone_number, $message)
   {
     $client = new Client($GLOBALS['sid'], $GLOBALS['token']);
     $client->messages->create(
       "+1".$phone_number,
       [
         'from' => $GLOBALS['number'],
-        'body' => "Hello ".$first_name." ".$last_name.", ".$message." -Thawrih Intra",
+        'body' => $message,
       ]
     );
   }
