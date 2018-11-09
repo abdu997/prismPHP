@@ -13,8 +13,7 @@ foreach($folders as $folder){
   }
 }
 $app .= str_replace(["<?php", "<?", "?>"], "", php_strip_whitespace("../../config.php"));
-$app .= "namespace Prism;print Router::enable();
-?>";
+$app .= "namespace Prism;print Router::enable();?>";
 fwrite($index, $app);
 fclose($index);
 exit(" \nPHP Compiled Successfully. New index is ready!\n\n");
