@@ -151,3 +151,21 @@ $GLOBALS['views'] =  [
   ...
 ];
 ```
+## Project Bundler
+Essentially, the bundler is concatenator that places all of the project's code into the `php/index.php` folder. PrismPHP offers two bundlers. **You can only have one running at time**
+### DEV Bundler
+The dev bundler, concatenates the project's code, as is, into `php/index.php`. The dev bundler is built to help the developer bundle the code automatically on each run time. It preserves the line indexes of the scripts, so as to help the developer track bugs and errors accurately. To have the dev bundler running, run these commands.
+```sh 
+$ cd path/to/php/prism/scripts
+$ php dev.php
+```
+### Prod Bundler
+The prod bundler works similar to the dev bundler. However, the prod bundler removes docs, comments and whitespaces from the scripts before concatenating. Generally, it minifies the code; hence, making bug tracking a much more difficult task. In addition, the prod bundler does not bundle automatically; so if you make changes to your scripts, you will have to run the bundler once more to have the changes reflected in future runtimes.
+
+The greatest advantages of running the project using the prod bundler would be an increase in runtime efficiency. Requests fullfilled by the a prod bundled project can cut runtime by up to 50% for each request. In addition, the it can cut data usage by up to 50% as well.
+
+To have the prod bundler running, run these commands.
+```sh 
+$ cd path/to/php/prism/scripts
+$ php prod.php
+```
