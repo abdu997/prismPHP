@@ -5,6 +5,27 @@ PrismPHP is a framework dedicated to be a project setup solution. It includes a 
 - PHP 7.2 =<
 - Apache 2.4.29 =<
 - MySQL
+- Unix-Like Operating System
+
+## Installation
+To create a primsPHP project, clone the master branch into a folder in the LAMP enviroment of your choice. Initally, the dev bundler would be the default bundler. 
+
+In order to have prismPHP running smoothly, you'll need to have `php/index.php`. If you have lost your `index.php`, you can reset it by running the dev bundler.
+
+You will also need to have these Apache .htaccess rules set in the root folder of your project. These are the key rules you will need. 
+
+```HTACCESS
+RewriteEngine On
+RewriteRule ^api/(.*) php/?REQUEST_TYPE=api&route=$1 [NC,L]
+RewriteRule ^view/(.*) php/?REQUEST_TYPE=view&route=$1 [NC,L]
+```
+
+You will need to use this rule for exemptions.
+
+```HTACCESS
+RewriteCond %{ENV:REDIRECT_STATUS} !=200
+RewriteRule (.*) api/doesNotExist [L] # This rewrite can be to anywhere
+``` 
 
 ## Config
 The config.php file contains the key values that are needed to configure prismPHP to your liking. If you wish not to fill in some values, **Do not delete the key**; instead, assign it a null or an empty value.
