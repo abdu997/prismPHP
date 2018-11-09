@@ -138,9 +138,9 @@ $GLOBALS['api'] =  [
 ```
 
 **Views Routes**
-API requests are requests where the address contains `/view/` (i.e `http://example.com/view/viewName`). Everything after `/view/` would be considered the route. `filename` is the path to the UI file relative to `php/Views`. `auth` is an array that contains the `auth_ref`s that are granted privileges to the route resource; you may have multiple `auth_ref`s in this array.
+Views requests are requests where the address contains `/view/` (i.e `http://example.com/view/viewName`). Everything after `/view/` would be considered the route. `filename` is the path to the UI file relative to `php/Views`. `auth` is an array that contains the `auth_ref`s that are granted privileges to the route resource; you may have multiple `auth_ref`s in this array.
 
-API response `content-type` header is set to `text/html`.
+Views response `content-type` header is set to `text/html`.
 ```php
 $GLOBALS['views'] =  [
   [
