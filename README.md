@@ -1,4 +1,5 @@
 # PrismPHP
+<<<<<<< HEAD
 PrismPHP is a framework dedicated to be a project setup solution. It includes a view/api router, a MySQL database switchboard, data sanitizers and validators, a PHPMailer shortcut, a dev/prod project bundler and an error log recorder. 
 
 ## Requirements 
@@ -159,3 +160,8 @@ $GLOBALS['views'] =  [
 
 
 
+=======
+PrismPHP is a framework dedicated to be a project setup solution. It includes a view/api router, a MySQL database switchboard, data sanitizer and validators, a PHPMailer shortcut, a dev/prod project bundler and a bug tracker. 
+
+NOTE: The Master branch is not ready yet. To see what I am working on, you may check the beta branch (unstable).
+>>>>>>> 5d4eb293ed356910713933546fff0ec5869eecbf
