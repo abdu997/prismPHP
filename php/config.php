@@ -24,12 +24,18 @@ $GLOBALS['DB'] =  [
 $GLOBALS['timezone'] =  'America/New_York';
 
 // Mail
-$GLOBALS['logo_url'] =  "";
+$GLOBALS['website_url'] =  "";
 $GLOBALS['email'] =  "";
+$GLOBALS['host'] =  "";
 $GLOBALS['password'] =  "";
 $GLOBALS['from_name'] =  "";
-$GLOBALS['host'] =  "";
-$GLOBALS['website_url'] =  "";
+
+$GLOBALS['logo_url'] =  "";
+$GLOBALS['bg_colour'] = "";
+$GLOBALS['primary_colour'] = "";
+$GLOBALS['secondary_colour'] = "";
+
+
 
 // Twilio
 $GLOBALS['sid'] =  "";

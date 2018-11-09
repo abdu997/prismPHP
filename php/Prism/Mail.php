@@ -19,7 +19,7 @@ class Mail
    */
   private static function makeLinksClickable($text){
     return preg_replace(
-      '!(((f|ht)tp(s)?://)[-a-zA-Zа-яА-Я()0-9@:%_+.~#?&;/=]+)!i', "<center><a target='_blank' style='text-decoration: underline; cursor: pointer;' href='$1'><button style='background: #2A3F54; border: 0; padding: 5px; width: 75px; color: white; margin: 20px 0;'>Link</button></a></center>",
+      '!(((f|ht)tp(s)?://)[-a-zA-Zа-яА-Я()0-9@:%_+.~#?&;/=]+)!i', "<center><a target='_blank' style='text-decoration: underline; cursor: pointer;' href='$1'><button style='background: ".$GLOBALS['primary_colour']."; border: 0; padding: 5px; width: 75px; color: white; margin: 20px 0;'>Link</button></a></center>",
       $text
     );
   }
@@ -31,26 +31,26 @@ class Mail
    * @param  string $subject
    * @param  string $message
    */
-  public static function enable($to, $subject, $message, $first_name = null, $last_name = null)
+  public static function enable($to, $subject, $message)
   {
     $message = "
-    <html style='background: #D9DEE4'>
+    <html style='background: ".$GLOBALS['bg_colour']."'>
       <center>
         <table style='max-width: 600px; width: 100%; margin-top: 25px;'>
           <tr>
-            <td style='background: #2A3F54; height: 75px' align='center'>
-              <img alt='logo' src='".$GLOBALS['logo_url']."' />
+            <td style='background: ".$GLOBALS['primary_colour']."; height: 75px' align='center'>
+              <img alt='logo' style='height: 75px' src='".$GLOBALS['logo_url']."' />
             </td>
           </tr>
           <tr style='height: 500px;'>
-            <td valign='top' style=' background: #F7F7F7; color: #2A3F54; font-size: 18px; padding: 25px; border: 1px solid #2A3F54;'>
+            <td valign='top' style=' background: ".$GLOBALS['secondary_colour']."; color: ".$GLOBALS['primary_colour']."; font-size: 18px; padding: 25px; border: 1px solid ".$GLOBALS['primary_colour'].";'>
               Hello ".$first_name." ".$last_name."!
               <br/>
               <br/>
               ".self::makeLinksClickable($message)."
               <center>
                 <a target='_blank' style='text-decoration: underline; cursor: pointer;' href='".$GLOBALS['website_url']."'>
-                  <button style='background: #2A3F54; border: 0; padding: 5px; width: 75px; color: white; margin: 20px 0;'>
+                  <button style='background: ".$GLOBALS['primary_colour']."; border: 0; padding: 5px; width: 75px; color: white; margin: 20px 0;'>
                   Got to Intra
                   </button>
                 </a>
