@@ -47,17 +47,8 @@ class Mail
           </tr>
           <tr style='height: 500px;'>
             <td valign='top' style=' background: ".$GLOBALS['secondary_colour']."; color: ".$GLOBALS['primary_colour']."; font-size: 18px; padding: 25px; border: 1px solid ".$GLOBALS['primary_colour'].";'>
-              Hello ".$first_name." ".$last_name."!
-              <br/>
               <br/>
               ".self::makeLinksClickable($message)."
-              <center>
-                <a target='_blank' style='text-decoration: underline; cursor: pointer;' href='".$GLOBALS['website_url']."'>
-                  <button style='background: ".$GLOBALS['primary_colour']."; border: 0; padding: 5px; width: 75px; color: white; margin: 20px 0;'>
-                  Got to Intra
-                  </button>
-                </a>
-              </center>
             </td>
           </tr>
         </table>

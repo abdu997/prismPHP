@@ -5,7 +5,7 @@ namespace Prism;
 use MySQLi;
 
 /**
- * Invloves all Database assets.
+ * Invloves all Database operations.
  *
  */
 class DB
@@ -14,7 +14,8 @@ class DB
   private $connection;
 
   /**
-   * Adjusts the value of $connection based on the environment, as different environments have their own database credentials.
+   * Adjusts the value of $connection based on which connection condition is met
+   * from the DB prism config.php.
    *
    */
   private function __construct()
@@ -27,6 +28,10 @@ class DB
     }
   }
 
+  /**
+   * Creates a php errors table if it does not exist in the database.
+   *
+   */
   public static function createErrorLog()
   {
     $sql = "CREATE TABLE IF NOT EXISTS `php_errors` (
@@ -41,26 +46,48 @@ class DB
     mysqli_query(self::connect(), $sql);
   }
 
+  /**
+   * Runs any sql query. If successful, a success response is returned. If the
+   * query was unsuccessful, the mysqli_error is returned.
+   *
+   * @param  string $sql Sql query
+   * @return array       Request status and message.
+   */
   public static function query($sql)
   {
     if(mysqli_query(self::connect(), $sql)){
       return ['status'=>'success'];
     } else {
       trigger_error(mysqli_error(self::connect()));
-      return ['status'=>'error', 'result'=> mysqli_error(self::connect())];
+      return ['status'=>'error', 'message'=> mysqli_error(self::connect())];
     }
   }
 
+  /**
+   * Runs an insert sql query. If successful, the mysqli insert id is returned.
+   * If the query was unsuccessful, the mysqli_error is returned.
+   *
+   * @param  string $sql Sql query
+   * @return array       Request status and message.
+   */
   public static function insert($sql)
   {
     if(mysqli_query(self::connect(), $sql)){
       return mysqli_insert_id(self::connect());
     } else {
       trigger_error(mysqli_error(self::connect()));
-      return ['status'=>'error', 'result'=> mysqli_error(self::connect())];
+      return ['status'=>'error', 'message'=> mysqli_error(self::connect())];
     }
   }
 
+  /**
+   * Runs a select sql query, preferably a select query. If successful,
+   * result rows are then returned in an array schema. If the query was
+   * unsuccessful, the mysqli_error is returned.
+   *
+   * @param  string $sql Sql query
+   * @return array       Request status and message.
+   */
   public static function select($sql)
   {
     $result = mysqli_query(self::connect(), $sql);
@@ -72,18 +99,34 @@ class DB
       return $output;
     } else {
       trigger_error(mysqli_error(self::connect()));
-      return ['status'=>'error', 'result'=> mysqli_error(self::connect())];
+      return ['status'=>'error', 'message'=> mysqli_error(self::connect())];
     }
   }
 
+  /**
+   * Runs any sql query, preferably a update query. If successful, a success
+   * response is returned. If the query was unsuccessful, the mysqli_error is
+   * returned.
+   *
+   * @param  string $sql Sql query
+   * @return array       Request status and message.
+   */
   public static function update($sql)
   {
-    if(mysqli_query(self::connect(), $sql)){
-      return ['status'=>'success'];
-    } else {
-      trigger_error(mysqli_error(self::connect()));
-      return ['status'=>'error', 'result'=> mysqli_error(self::connect())];
-    }
+    return self::query($sql);
+  }
+
+  /**
+   * Runs any sql query, preferably a delete query. If successful, a success
+   * response is returned. If the query was unsuccessful, the mysqli_error is
+   * returned.
+   *
+   * @param  string $sql Sql query
+   * @return array       Request status and message.
+   */
+  public static function delete($sql)
+  {
+    return self::query($sql);
   }
 
   /**
@@ -115,6 +158,11 @@ class DB
     }
   }
 
+  /**
+   * Retrieves timestamp in UTC format.
+   *
+   * @return string Current timestamp
+   */
   public static function timestamp()
   {
     return date("Y-m-d H:i:s", strtotime('now'));

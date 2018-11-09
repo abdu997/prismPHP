@@ -9,7 +9,11 @@ namespace Prism;
 class Router
 {
   /**
-   * Router config settings. Starts session. Calls santization of post values. Lists allowed external hostnames. If an external request hostname is in the allowed hostnames list, then includes the origin in Access Control Allow Origin. Defines set error handler. Defines timezone.
+   * Router config settings. Starts session. Calls santization of post values.
+   * Loads Dependencies. If an external request hostname is in the allowed
+   * hostnames list from the prism config.php, then includes the origin in
+   * Access Control Allow Origin. Defines set error handler. Defines timezone.
+   * Changes response content type based on the request type.
    *
    */
   public static function config()
@@ -35,6 +39,11 @@ class Router
     set_error_handler("Prism\Router::errorHandler");
   }
 
+  /**
+   * Adds prism core depenedancies to dep list from the prism config file.
+   * Then requires all depenedancy files.
+   *
+   */
   private static function loadDep()
   {
     array_push(
@@ -50,8 +59,15 @@ class Router
   }
 
   /**
-   * Calls router config. Check if route exists. Loops through routes, if a match exists auth, group and method. The callback is then called and returned in JSON if it is an array, returned as a string if not.
-   * @return mixed
+   * Runs the router config and fetches the current route. If a router error
+   * code exists, it is then set as the http response code and exits the
+   * operation. Loops through the auth groups defined in the config. If the auth
+   * group condition is not met and does not corresponde to the route auth group,
+   * and access denied response is retuned. If the request type is api, the
+   * callback from the controller is returned in json. If the request type is
+   * view, the file contents from the Views folder is returned.
+   *
+   * @return string View or api response.
    */
   public static function enable()
   {
@@ -80,8 +96,13 @@ class Router
   }
 
   /**
-   * Checks if current route exists, if not a 404 is returned and the operation is exited.
+   * If it is an api request, it loops through api routes to check if
+   * the request method matches the route, if not, returns a 405. If so, the
+   * route is returned. If it is a view request, it loops throught the views
+   * routes, if so, the route is returned. If the route is not found, an error
+   * 404 is returned.
    *
+   * @return array error code or route info.
    */
   public static function checkRouteExists()
   {
@@ -114,11 +135,11 @@ class Router
   /**
    * The function thats called when an error occurs. In localhost, Internal Server Error 500 is returned with the callback and message. Message error logged. Else, error details recorded in database. Operation exited.
    *
-   * @param  int $errno
+   * @param  int    $errno
    * @param  string $errstr  message
    * @param  string $errfile file
-   * @param  int $errline error line
-   * @return string json array of the call status and result
+   * @param  int    $errline error line
+   * @return string          json array of the call status and result
    */
   public static function errorHandler($errno, $errstr, $errfile, $errline)
   {
