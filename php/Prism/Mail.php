@@ -3,7 +3,7 @@
 namespace Prism;
 
 /**
- * Includes all mail Prism.
+ * Includes all mail Prism objects.
  *
  */
 use PHPMailer\PHPMailer\PHPMailer;
@@ -12,7 +12,8 @@ use PHPMailer\PHPMailer\Exception;
 class Mail
 {
   /**
-   * Replaces links in string with a clickable button link.
+   * Replaces links in string with a clickable button link. Developer
+   * may input primary colour by filling out the mail prism config.
    *
    * @param  string $text message
    * @return string
@@ -25,7 +26,9 @@ class Mail
   }
 
   /**
-   * Defines mail headers and sends an email using the corporate template. Asset address are relative based on the current origin. If the env is localhost, email will not be sent.
+   * Defines mail headers and sends an email using the prism template. Developer
+   * may input background colour, primary colour, secondary colour and logo url
+   * by filling out the mail prism config.
    *
    * @param  string $to      email
    * @param  string $subject

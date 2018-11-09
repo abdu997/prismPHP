@@ -24,7 +24,6 @@ $GLOBALS['DB'] =  [
 $GLOBALS['timezone'] =  'America/New_York';
 
 // Mail
-$GLOBALS['website_url'] =  "";
 $GLOBALS['email'] =  "";
 $GLOBALS['host'] =  "";
 $GLOBALS['password'] =  "";
