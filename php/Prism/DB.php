@@ -147,13 +147,15 @@ class DB
    */
   public static function sanitize()
   {
-    foreach($_POST as $key => $value){
-      if(is_array($value)){
-        foreach($value as $sub_key => $sub_value){
-          $value[$sub_key] = mysqli_real_escape_string(self::connect(), $value[$sub_key]);
+    if($_POST){
+      foreach($_POST as $key => $value){
+        if(is_array($value)){
+          foreach($value as $sub_key => $sub_value){
+            $value[$sub_key] = mysqli_real_escape_string(self::connect(), $value[$sub_key]);
+          }
+        } else {
+          $_POST[$key] = mysqli_real_escape_string(self::connect(), $_POST[$key]);
         }
-      } else {
-        $_POST[$key] = mysqli_real_escape_string(self::connect(), $_POST[$key]);
       }
     }
   }
