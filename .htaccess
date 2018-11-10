@@ -1,7 +1,0 @@
-RewriteEngine On
-Options -Indexes
-RewriteRule ^api/(.*) php/?REQUEST_TYPE=api&route=$1 [NC,L]
-RewriteRule ^view/(.*) php/?REQUEST_TYPE=view&route=$1 [NC,L]
-
-RewriteCond %{ENV:REDIRECT_STATUS} !=200
-RewriteRule (.*) api/doesNotExist [L]
