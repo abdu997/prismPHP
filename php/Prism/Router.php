@@ -78,17 +78,19 @@ class Router
       exit();
     }
     foreach($GLOBALS['auth_groups'] as $auth_group){
-      if(in_array($auth_group['auth_ref'], $route['auth']) && $auth_group['condition']){
-        if($_GET['REQUEST_TYPE'] === "api"){
-          $callback = call_user_func("Controllers\\".$route['callback']);
-          http_response_code(200);
-          if(is_array($callback)){
-            return json_encode($callback);
-          } else {
-            return $callback;
+      if(in_array($auth_group['auth_ref'], $route['auth'])){
+        if($GLOBALS['auth_groups']){
+          if($_GET['REQUEST_TYPE'] === "api"){
+            $callback = call_user_func("Controllers\\".$route['callback']);
+            http_response_code(200);
+            if(is_array($callback)){
+              return json_encode($callback);
+            } else {
+              return $callback;
+            }
+          } else if($_GET['REQUEST_TYPE'] === "view"){
+            return file_get_contents("Views/".$route['filename']);
           }
-        } else if($_GET['REQUEST_TYPE'] === "view"){
-          return file_get_contents("Views/".$route['filename']);
         }
       }
     }
