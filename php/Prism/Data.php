@@ -26,6 +26,25 @@ class Data
   }
 
   /**
+   * This function converts an stdClass object into a php array. This may be
+   * used for accepting post values from an angular app.
+   *
+   * @param  object $data serialized post array
+   * @return array        php post array
+   */
+  public static function convertObjToArr($data)
+  {
+    if(is_object($data)){
+      $data = get_object_vars($data);
+    }
+    if(is_array($data)){
+      return array_map("Prism\Data::convertObjToArr", $data);
+    } else {
+      return $data;
+    }
+  }
+
+  /**
    * Phone number validator, checks if the length is not 10 and that the string has no non numeric characters.
    *
    * @param  int $phone_number
