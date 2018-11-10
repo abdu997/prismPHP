@@ -1,18 +1,18 @@
 # PrismPHP
-PrismPHP is a framework dedicated to be a project setup solution. It includes a view/api router, a MySQL database switchboard, data sanitizers and validators, a PHPMailer shortcut, a dev/prod project bundler and an error log recorder. 
+PrismPHP is a framework dedicated to be a project setup solution. It includes a view/api router, a MySQL database switchboard, data sanitizers and validators, a PHPMailer shortcut, a dev/prod project bundler and an error log recorder.
 
-## Requirements 
+## Requirements
 - PHP 7.2 =<
 - Apache 2.4.29 =<
 - MySQL
 - Unix-Like Operating System
 
 ## Installation
-To create a primsPHP project, clone the master branch into a folder in the LAMP enviroment of your choice. Initally, the dev bundler would be the default bundler. 
+To create a primsPHP project, clone the master branch into a folder in the LAMP enviroment of your choice. Initally, the dev bundler would be the default bundler.
 
 In order to have prismPHP running smoothly, you'll need to have `php/index.php`. If you have lost your `index.php`, you can reset it by running the dev bundler.
 
-You will also need to have these Apache .htaccess rules set in the root folder of your project. These are the key rules you will need. 
+You will also need to have these Apache .htaccess rules set in the root folder of your project. These are the key rules you will need.
 
 ```HTACCESS
 RewriteEngine On
@@ -25,7 +25,7 @@ You will need to use this rule for exemptions.
 ```HTACCESS
 RewriteCond %{ENV:REDIRECT_STATUS} !=200
 RewriteRule (.*) api/doesNotExist [L] # This rewrite can be to anywhere
-``` 
+```
 
 ## Config
 The config.php file contains the key values that are needed to configure prismPHP to your liking. If you wish not to fill in some values, **Do not delete the key**; instead, assign it a null or an empty value.
@@ -99,7 +99,7 @@ $GLOBALS['number'] =  ""; // Twilio phone number
 ```
 
 ### PrismPHP View/API Router
-The prismPHP router is equipped to handle your app's HTTP requests. 
+The prismPHP router is equipped to handle your app's HTTP requests.
 
 **Cross Origin hostnames**
 The first key that is offered by this feature is `allowed_hostnames`.
@@ -118,11 +118,11 @@ $GLOBALS['Access_Control_Allow_Credentials'] =  true;
 ```
 
 **Auth Groups**
-The third key is `auth_groups`. Authentication groups are eventually assigned to routes in order to create a layer of restriction. **If this is empty, you will get Access Denied**. 
+The third key is `auth_groups`. Authentication groups are eventually assigned to routes in order to create a layer of restriction. **If this is empty, you will get Access Denied**.
 The `auth_ref` key holds the authentication group's name value. The `condition` key works similarily to the DB switch board condition. It is an expression. It is recommended the expression would result in a boolean, yet a defined non-zero output should suffice.
 
-Below, are a few examples of what auth groups can look like. First, is a public group, by its nature it can be accessed without restriction; therefore the condition is always true, as long as the route belongs to this group. 
-The second auth group is a native callback that returns a boolean. The third, is a callback to a function you've written.
+Below, are a few examples of what auth groups can look like. First, is a public group, by its nature it can be accessed without restriction; therefore the condition is always true, as long as the route belongs to this group.
+The second auth group is a native callback that returns a boolean. The third, is a callback to a function you've written. **This must be an expression**
 
 ```php
 $GLOBALS['auth_groups'] =  [
@@ -132,11 +132,11 @@ $GLOBALS['auth_groups'] =  [
   ],
   [
     'auth_ref' => 'admin',
-    'condition' => isset($_SESSION['admin_id]),
+    'condition' => isset($_SESSION['admin_id]) === true,
   ],
   [
     'auth_ref' => 'partner',
-    'condition' => SessionProvider\Session::isPartner(),
+    'condition' => SessionProvider\Session::notPartner() === false,
   ],
   ...
 ];
@@ -176,7 +176,7 @@ $GLOBALS['views'] =  [
 Essentially, the bundler is concatenator that places all of the project's code into the `php/index.php` folder. PrismPHP offers two bundlers. **You can only have one running at time**
 ### DEV Bundler
 The dev bundler, concatenates the project's code, as is, into `php/index.php`. The dev bundler is built to help the developer bundle the code automatically on each run time. It preserves the line indexes of the scripts, so as to help the developer track bugs and errors accurately. To have the dev bundler running, run these commands.
-```sh 
+```sh
 $ cd path/to/php/prism/scripts
 $ php dev.php
 ```
@@ -186,7 +186,7 @@ The prod bundler works similar to the dev bundler. However, the prod bundler rem
 The greatest advantages of running the project using the prod bundler would be an increase in runtime efficiency. Requests fullfilled by the a prod bundled project can cut runtime by up to 50% for each request. In addition, the it can cut data usage by up to 50% as well.
 
 To have the prod bundler running, run these commands.
-```sh 
+```sh
 $ cd path/to/php/prism/scripts
 $ php prod.php
 ```
