@@ -34,7 +34,7 @@ class DB
    */
   public static function createErrorLog()
   {
-    $sql = "CREATE TABLE IF NOT EXISTS `php_errors` (
+    $sql = "CREATE TABLE IF NOT EXISTS `prism_php_errors` (
       `record_id` int(11) NOT NULL AUTO_INCREMENT,
       `errno` int(11) NOT NULL,
       `errstr` varchar(100) NOT NULL,
