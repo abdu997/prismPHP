@@ -1,11 +1,31 @@
 # PrismPHP
-<<<<<<< HEAD
 PrismPHP is a framework dedicated to be a project setup solution. It includes a view/api router, a MySQL database switchboard, data sanitizers and validators, a PHPMailer shortcut, a dev/prod project bundler and an error log recorder. 
 
 ## Requirements 
 - PHP 7.2 =<
 - Apache 2.4.29 =<
 - MySQL
+- Unix-Like Operating System
+
+## Installation
+To create a primsPHP project, clone the master branch into a folder in the LAMP enviroment of your choice. Initally, the dev bundler would be the default bundler. 
+
+In order to have prismPHP running smoothly, you'll need to have `php/index.php`. If you have lost your `index.php`, you can reset it by running the dev bundler.
+
+You will also need to have these Apache .htaccess rules set in the root folder of your project. These are the key rules you will need. 
+
+```HTACCESS
+RewriteEngine On
+RewriteRule ^api/(.*) php/?REQUEST_TYPE=api&route=$1 [NC,L]
+RewriteRule ^view/(.*) php/?REQUEST_TYPE=view&route=$1 [NC,L]
+```
+
+You will need to use this rule for exemptions.
+
+```HTACCESS
+RewriteCond %{ENV:REDIRECT_STATUS} !=200
+RewriteRule (.*) api/doesNotExist [L] # This rewrite can be to anywhere
+``` 
 
 ## Config
 The config.php file contains the key values that are needed to configure prismPHP to your liking. If you wish not to fill in some values, **Do not delete the key**; instead, assign it a null or an empty value.
@@ -152,16 +172,21 @@ $GLOBALS['views'] =  [
   ...
 ];
 ```
+## Project Bundler
+Essentially, the bundler is concatenator that places all of the project's code into the `php/index.php` folder. PrismPHP offers two bundlers. **You can only have one running at time**
+### DEV Bundler
+The dev bundler, concatenates the project's code, as is, into `php/index.php`. The dev bundler is built to help the developer bundle the code automatically on each run time. It preserves the line indexes of the scripts, so as to help the developer track bugs and errors accurately. To have the dev bundler running, run these commands.
+```sh 
+$ cd path/to/php/prism/scripts
+$ php dev.php
+```
+### Prod Bundler
+The prod bundler works similar to the dev bundler. However, the prod bundler removes docs, comments and whitespaces from the scripts before concatenating. Generally, it minifies the code; hence, making bug tracking a much more difficult task. In addition, the prod bundler does not bundle automatically; so if you make changes to your scripts, you will have to run the bundler once more to have the changes reflected in future runtimes.
 
+The greatest advantages of running the project using the prod bundler would be an increase in runtime efficiency. Requests fullfilled by the a prod bundled project can cut runtime by up to 50% for each request. In addition, the it can cut data usage by up to 50% as well.
 
-
-
-
-
-
-
-=======
-PrismPHP is a framework dedicated to be a project setup solution. It includes a view/api router, a MySQL database switchboard, data sanitizer and validators, a PHPMailer shortcut, a dev/prod project bundler and a bug tracker. 
-
-NOTE: The Master branch is not ready yet. To see what I am working on, you may check the beta branch (unstable).
->>>>>>> 5d4eb293ed356910713933546fff0ec5869eecbf
+To have the prod bundler running, run these commands.
+```sh 
+$ cd path/to/php/prism/scripts
+$ php prod.php
+```
