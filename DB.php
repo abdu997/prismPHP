@@ -103,6 +103,26 @@ class DB
     }
   }
 
+
+  /**
+   * Runs a select sql query, preferably a select query. If successful,
+   * a result row is then returned in an array schema. If the query was
+   * unsuccessful, the mysqli_error is returned.
+   *
+   * @param  string $sql Sql query
+   * @return array       Request status and message.
+   */
+  public static function selectOne($sql)
+  {
+    $result = mysqli_query(self::connect(), $sql);
+    if($result){
+      return mysqli_fetch_array($result);
+    } else {
+      trigger_error(mysqli_error(self::connect()));
+      return ['status'=>'error', 'message'=> mysqli_error(self::connect())];
+    }
+  }
+
   /**
    * Runs any sql query, preferably a update query. If successful, a success
    * response is returned. If the query was unsuccessful, the mysqli_error is
