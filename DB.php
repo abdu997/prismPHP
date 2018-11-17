@@ -103,7 +103,6 @@ class DB
     }
   }
 
-
   /**
    * Runs a select sql query, preferably a select query. If successful,
    * a result row is then returned in an array schema. If the query was
