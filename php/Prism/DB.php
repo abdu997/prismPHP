@@ -47,89 +47,6 @@ class DB
   }
 
   /**
-   * Runs any sql query. If successful, a success response is returned. If the
-   * query was unsuccessful, the mysqli_error is returned.
-   *
-   * @param  string $sql Sql query
-   * @return array       Request status and message.
-   */
-  public static function query($sql)
-  {
-    if(mysqli_query(self::connect(), $sql)){
-      return ['status'=>'success'];
-    } else {
-      trigger_error(mysqli_error(self::connect()));
-      return ['status'=>'error', 'message'=> mysqli_error(self::connect())];
-    }
-  }
-
-  /**
-   * Runs an insert sql query. If successful, the mysqli insert id is returned.
-   * If the query was unsuccessful, the mysqli_error is returned.
-   *
-   * @param  string $sql Sql query
-   * @return array       Request status and message.
-   */
-  public static function insert($sql)
-  {
-    if(mysqli_query(self::connect(), $sql)){
-      return mysqli_insert_id(self::connect());
-    } else {
-      trigger_error(mysqli_error(self::connect()));
-      return ['status'=>'error', 'message'=> mysqli_error(self::connect())];
-    }
-  }
-
-  /**
-   * Runs a select sql query, preferably a select query. If successful,
-   * result rows are then returned in an array schema. If the query was
-   * unsuccessful, the mysqli_error is returned.
-   *
-   * @param  string $sql Sql query
-   * @return array       Request status and message.
-   */
-  public static function select($sql)
-  {
-    $result = mysqli_query(self::connect(), $sql);
-    if($result){
-      $output = [];
-      while($row = mysqli_fetch_array($result)){
-        $output[] = $row;
-      }
-      return $output;
-    } else {
-      trigger_error(mysqli_error(self::connect()));
-      return ['status'=>'error', 'message'=> mysqli_error(self::connect())];
-    }
-  }
-
-  /**
-   * Runs any sql query, preferably a update query. If successful, a success
-   * response is returned. If the query was unsuccessful, the mysqli_error is
-   * returned.
-   *
-   * @param  string $sql Sql query
-   * @return array       Request status and message.
-   */
-  public static function update($sql)
-  {
-    return self::query($sql);
-  }
-
-  /**
-   * Runs any sql query, preferably a delete query. If successful, a success
-   * response is returned. If the query was unsuccessful, the mysqli_error is
-   * returned.
-   *
-   * @param  string $sql Sql query
-   * @return array       Request status and message.
-   */
-  public static function delete($sql)
-  {
-    return self::query($sql);
-  }
-
-  /**
    * Insantiates the databse function.
    *
    */
@@ -168,5 +85,122 @@ class DB
   public static function timestamp()
   {
     return date("Y-m-d H:i:s", strtotime('now'));
+  }
+
+  /**
+   * Orindally replaces question marks in query string with sanitized or
+   * serialized values from the values array.
+   *
+   * @param  string $sql    SQL query string
+   * @param  array  $values Array of values to be replaced into the query string
+   * @return string         SQL query string
+   */
+  private static function queryBuilder($sql, $values)
+  {
+    if(!is_array($values)){
+      return "Values must be an array";
+    }
+    $value_count = substr_count($sql, "?");
+    for($x = 0; $x < $value_count; $x++){
+      $value = $values[$x];
+      if(is_array($value)){
+        $value = serialize($value);
+      }
+      $value = mysqli_real_escape_string(self::connect(), $value);
+      $sql = preg_replace("/\?/", $value, $sql, 1);
+    }
+    return $sql;
+  }
+
+  /**
+   * Runs any sql query. If successful, a success response is returned. If the
+   * query was unsuccessful, the mysqli_error is returned.
+   *
+   * @param  string $sql Sql query
+   * @return array       Request status and message.
+   */
+  public static function query($sql, $values = null)
+  {
+    if($values){
+      $sql = self::queryBuilder($sql, $values);
+    }
+    if(mysqli_query(self::connect(), $sql)){
+      return ['status'=>'success'];
+    } else {
+      trigger_error(mysqli_error(self::connect()));
+      return ['status'=>'error', 'message'=> mysqli_error(self::connect())];
+    }
+  }
+
+  /**
+   * Runs an insert sql query. If successful, the mysqli insert id is returned.
+   * If the query was unsuccessful, the mysqli_error is returned.
+   *
+   * @param  string $sql Sql query
+   * @return array       Request status and message.
+   */
+  public static function insert($sql, $values = null)
+  {
+    if($values){
+      $sql = self::queryBuilder($sql, $values);
+    }
+    if(mysqli_query(self::connect(), $sql)){
+      return mysqli_insert_id(self::connect());
+    } else {
+      trigger_error(mysqli_error(self::connect()));
+      return ['status'=>'error', 'message'=> mysqli_error(self::connect())];
+    }
+  }
+
+  /**
+   * Runs a select sql query, preferably a select query. If successful,
+   * result rows are then returned in an array schema. If the query was
+   * unsuccessful, the mysqli_error is returned.
+   *
+   * @param  string $sql Sql query
+   * @return array       Request status and message.
+   */
+  public static function select($sql, $values = null)
+  {
+    if($values){
+      $sql = self::queryBuilder($sql, $values);
+    }
+    $result = mysqli_query(self::connect(), $sql);
+    if($result){
+      $output = [];
+      while($row = mysqli_fetch_array($result)){
+        $output[] = $row;
+      }
+      return $output;
+    } else {
+      trigger_error(mysqli_error(self::connect()));
+      return ['status'=>'error', 'message'=> mysqli_error(self::connect())];
+    }
+  }
+
+  /**
+   * Runs any sql query, preferably a update query. If successful, a success
+   * response is returned. If the query was unsuccessful, the mysqli_error is
+   * returned.
+   *
+   * @param  string $sql Sql query
+   * @return array       Request status and message.
+   */
+  public static function update($sql)
+  {
+    return self::query($sql);
+  }
+
+  /**
+   * Runs any sql query, preferably a delete query. If successful, a success
+   * response is returned. If the query was unsuccessful, the mysqli_error is
+   * returned.
+   *
+   * @param  string $sql Sql query
+   * @return array       Request status and message.
+   */
+  public static function delete($sql)
+  {
+    return self::query($sql);
   }
 }
