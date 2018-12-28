@@ -88,8 +88,7 @@ class DB
   }
 
   /**
-   * Orindally replaces question marks in query string with sanitized or
-   * serialized values from the values array.
+   * Added a second paramter option for sql query functions. The second paramter is an array that contains the query values. If the second paramter exists, it replaces each question mark in the query string with the corresponding value from the values array. Orindally replaces question marks in query string with sanitized or serialized values from the values array.
    *
    * @param  string $sql    SQL query string
    * @param  array  $values Array of values to be replaced into the query string
