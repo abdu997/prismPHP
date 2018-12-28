@@ -154,9 +154,9 @@ class Router
       ]
     );
     error_log($errmsg);
-    $timestamp = Prism\DB::timestamp();
+    $timestamp = DB::timestamp();
     $sql = "INSERT INTO php_errors(errno, errstr, errfile, errline, timestamp) VALUES('$errno', '$errstr', '$errfile', '$errline', '$timestamp')";
-    mysqli_query(Prism\DB::connect(), $sql);
+    mysqli_query(DB::connect(), $sql);
     exit();
   }
 }
