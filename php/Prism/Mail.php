@@ -70,7 +70,7 @@ class Mail
       $mail->Body = $message;
       $mail->send();
     } catch (Exception $e) {
-      trigger_error('Message could not be sent. Mailer Error: '. $mail->ErrorInfo);
+      trigger_error('Message could not be sent. Mailer Error: '. $mail->ErrorInfo, E_ERROR);
     }
   }
 }
