@@ -28,7 +28,7 @@ class Router
       );
     }
     date_default_timezone_set($GLOBALS['timezone']);
-    if($_GET['REQUEST_TYPE'] === "api"){
+    if(preg_match("/^api\/(.*)$/", $_GET['route'])){
       header("Content-type: application/json");
     } else {
       header("Content-type: text/html");
@@ -64,7 +64,7 @@ class Router
    * operation. Loops through the auth groups defined in the config. If the auth
    * group condition is not met and does not corresponde to the route auth group,
    * and access denied response is retuned. If the request type is api, the
-   * callback from the controller is returned in json. If the request type is
+   * callback from the controller is returned in a success json result array. If the request type is
    * view, the file contents from the Views folder is returned.
    *
    * @return string View or api response.
@@ -80,15 +80,16 @@ class Router
     foreach($GLOBALS['auth_groups'] as $auth_group){
       if(in_array($auth_group['auth_ref'], $route['auth'])){
         if($GLOBALS['auth_groups']){
-          if($_GET['REQUEST_TYPE'] === "api"){
+          if(preg_match("/^api\/(.*)$/", $_GET['route'])){
             $callback = call_user_func("Controllers\\".$route['callback']);
             http_response_code(200);
-            if(is_array($callback)){
-              return json_encode($callback);
-            } else {
-              return $callback;
-            }
-          } else if($_GET['REQUEST_TYPE'] === "view"){
+            return json_encode(
+              [
+                'status' => 'success',
+                'result' => $callback
+              ]
+            );
+          } else if(preg_match("/^view\/(.*)$/", $_GET['route'])){
             return file_get_contents("Views/".$route['filename']);
           }
         }
@@ -108,9 +109,9 @@ class Router
    */
   public static function checkRouteExists()
   {
-    if($_GET['REQUEST_TYPE'] === "api"){
+    if(preg_match("/^api\/(.*)$/", $_GET['route'], $match)){
       foreach($GLOBALS['api'] as $route){
-        if($route['route'] === $_GET['route']){
+        if($route['route'] === $match[1]){
           if(
             $_SERVER['REQUEST_METHOD'] !== $route['REQUEST_METHOD']
             && $_SERVER['REQUEST_METHOD'] !== "OPTIONS"
@@ -122,9 +123,9 @@ class Router
           return $route;
         }
       }
-    } else if($_GET['REQUEST_TYPE'] === "view"){
+    } else if(preg_match("/^view\/(.*)$/", $_GET['route'], $match)){
       foreach($GLOBALS['views'] as $view){
-        if($view['route'] === $_GET['route']){
+        if($view['route'] === $match[1]){
           return $view;
         }
       }
@@ -145,18 +146,20 @@ class Router
    */
   public static function errorHandler($errno, $errstr, $errfile, $errline)
   {
-    http_response_code(500);
-    $errmsg = $errstr." Error on line ".$errline." in ".$errfile;
+    if($errno === 1024){
+      $errmsg = $errstr;
+    } else {
+      http_response_code(500);
+      $errmsg = $errstr." Error on line ".$errline." in ".$errfile;
+      error_log($errmsg);
+    }
+    DB::query("INSERT INTO php_errors(errno, errstr, errfile, errline, timestamp) VALUES('?', '?', '?', '?', '?')", ['$errno', '$errstr', '$errfile', '$errline', '$timestamp']);
     print json_encode(
       [
         'status' => 'error',
         'message' => $errmsg
       ]
     );
-    error_log($errmsg);
-    $timestamp = Prism\DB::timestamp();
-    $sql = "INSERT INTO php_errors(errno, errstr, errfile, errline, timestamp) VALUES('$errno', '$errstr', '$errfile', '$errline', '$timestamp')";
-    mysqli_query(Prism\DB::connect(), $sql);
     exit();
   }
 }
