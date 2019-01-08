@@ -86,6 +86,7 @@ class Router
             return json_encode(
               [
                 'status' => 'success',
+                'timestamp' => time(),
                 'result' => $callback
               ]
             );
@@ -153,10 +154,12 @@ class Router
       $errmsg = $errstr." Error on line ".$errline." in ".$errfile;
       error_log($errmsg);
     }
-    DB::query("INSERT INTO php_errors(errno, errstr, errfile, errline, timestamp) VALUES('?', '?', '?', '?', '?')", ['$errno', '$errstr', '$errfile', '$errline', '$timestamp']);
+    $timestamp = DB::timestamp();
+    DB::query("INSERT INTO php_errors(errno, errstr, errfile, errline, timestamp) VALUES('?', '?', '?', '?', '?')", [$errno, $errstr, $errfile, $errline, $timestamp]);
     print json_encode(
       [
         'status' => 'error',
+        'timestamp' => time(),
         'message' => $errmsg
       ]
     );
