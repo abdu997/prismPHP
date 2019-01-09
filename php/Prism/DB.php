@@ -192,7 +192,13 @@ class DB
     }
     $result = mysqli_query(self::connect(), $sql);
     if($result){
-      return mysqli_fetch_array($result);
+      $row = mysqli_fetch_array($result);
+      foreach($row as $key => $value){
+        if(preg_match("/a:(.*):/", $value)){
+          $row[$key] = unserialize($value);
+        }
+      }
+      return $row;
     } else {
       trigger_error(mysqli_error(self::connect()));
       return ['status'=>'error', 'message'=> mysqli_error(self::connect())];
