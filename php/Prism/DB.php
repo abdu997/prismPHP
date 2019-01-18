@@ -167,7 +167,7 @@ class DB
     $result = mysqli_query(self::connect(), $sql);
     if($result){
       $output = [];
-      while($row = mysqli_fetch_array($result)){
+      while($row = mysqli_fetch_assoc($result)){
         $output[] = $row;
       }
       return $output;
@@ -192,7 +192,7 @@ class DB
     }
     $result = mysqli_query(self::connect(), $sql);
     if($result){
-      $row = mysqli_fetch_array($result);
+      $row = mysqli_fetch_assoc($result);
       foreach($row as $key => $value){
         if(preg_match("/a:(.*):/", $value)){
           $row[$key] = unserialize($value);
