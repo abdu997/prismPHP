@@ -126,7 +126,7 @@ class DB
     if(mysqli_query(self::connect(), $sql)){
       return ['status'=>'success'];
     } else {
-      trigger_error(mysqli_error(self::connect()), E_ERROR);
+      trigger_error(mysqli_error(self::connect()), E_USER_ERROR);
       return ['status'=>'error', 'message'=> mysqli_error(self::connect())];
     }
   }
@@ -146,7 +146,7 @@ class DB
     if(mysqli_query(self::connect(), $sql)){
       return mysqli_insert_id(self::connect());
     } else {
-      trigger_error(mysqli_error(self::connect()), E_ERROR);
+      trigger_error(mysqli_error(self::connect()), E_USER_ERROR);
       return ['status'=>'error', 'message'=> mysqli_error(self::connect())];
     }
   }
@@ -172,7 +172,7 @@ class DB
       }
       return $output;
     } else {
-      trigger_error(mysqli_error(self::connect()), E_ERROR);
+      trigger_error(mysqli_error(self::connect()), E_USER_ERROR);
       return ['status'=>'error', 'message'=> mysqli_error(self::connect())];
     }
   }
