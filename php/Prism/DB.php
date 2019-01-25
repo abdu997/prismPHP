@@ -180,7 +180,8 @@ class DB
   /**
    * Runs a select sql query, preferably a select query. If successful,
    * a result row is then returned in an array schema. If the query was
-   * unsuccessful, the mysqli_error is returned.
+   * unsuccessful, the mysqli_error is returned. Temporary loop variables are
+   * unset as recommended
    *
    * @param  string $sql Sql query
    * @return array       Request status and message.
@@ -198,6 +199,7 @@ class DB
           $row[$key] = unserialize($value);
         }
       }
+      unset($key, $value);
       return $row;
     } else {
       trigger_error(mysqli_error(self::connect()));
