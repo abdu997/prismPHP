@@ -1,6 +1,3 @@
 RewriteEngine On
 Options -Indexes
-RewriteRule ^api/(.*) php/?route=api/$1 [NC,L]
-
-RewriteCond %{ENV:REDIRECT_STATUS} !=200
-RewriteRule (.*) php/?route=view/$1 [NC,L]
+RewriteRule ^(.*)$ php/index.php [NC,L]

@@ -13,7 +13,6 @@ class Router
    * Loads Dependencies. If an external request hostname is in the allowed
    * hostnames list from the prism config.php, then includes the origin in
    * Access Control Allow Origin. Defines set error handler. Defines timezone.
-   * Changes response content type based on the request type.
    *
    */
   public static function config()
@@ -28,11 +27,6 @@ class Router
       );
     }
     date_default_timezone_set($GLOBALS['timezone']);
-    if(preg_match("/^api\/(.*)$/", $_GET['route'])){
-      header("Content-type: application/json");
-    } else {
-      header("Content-type: text/html");
-    }
     header("Access-Control-Allow-Credentials: ".$GLOBALS['Access_Control_Allow_Credentials']);
     header_remove("X-Powered-By");
     error_reporting(E_ALL);
@@ -62,10 +56,12 @@ class Router
    * Runs the router config and fetches the current route. If a router error
    * code exists, it is then set as the http response code and exits the
    * operation. Loops through the auth groups defined in the config. If the auth
-   * group condition is not met and does not corresponde to the route auth group,
-   * and access denied response is retuned. If the request type is api, the
+   * group condition is not met and does not correspond to the route auth group,
+   * an access denied response is retuned. If the request type is api, the
    * callback from the controller is returned in a success json result array. If the request type is
-   * view, the file contents from the Views folder is returned.
+   * view, the file contents from the Views folder is returned. Changes response
+   * content type based on the request type, if api/ is in the URI,
+   * application/json, otherwise it will be text/html.
    *
    * @return string View or api response.
    */
@@ -78,11 +74,11 @@ class Router
       exit();
     }
     foreach($GLOBALS['auth_groups'] as $auth_group){
-      if(in_array($auth_group['auth_ref'], $route['auth'])){
-        if($GLOBALS['auth_groups']){
-          if(preg_match("/^api\/(.*)$/", $_GET['route'])){
+      if(in_array($auth_group['auth_ref'], $route['auth']) && $auth_group['condition']){
+          http_response_code(200);
+          if(preg_match("/^\/api\/(.*)$/", $_SERVER['REQUEST_URI'])){
             $callback = call_user_func("Controllers\\".$route['callback']);
-            http_response_code(200);
+            header("Content-type: application/json");
             return json_encode(
               [
                 'status' => 'success',
@@ -90,10 +86,10 @@ class Router
                 'result' => $callback
               ]
             );
-          } else if(preg_match("/^view\/(.*)$/", $_GET['route'])){
+          } else {
+            header("Content-type: text/html");
             return file_get_contents("Views/".$route['filename']);
           }
-        }
       }
     }
     return json_encode(['status' => 'error', 'message' => 'Access Denied']);
@@ -110,25 +106,22 @@ class Router
    */
   public static function checkRouteExists()
   {
-    if(preg_match("/^api\/(.*)$/", $_GET['route'], $match)){
-      foreach($GLOBALS['api'] as $route){
-        if($route['route'] === $match[1]){
-          if(
-            $_SERVER['REQUEST_METHOD'] !== $route['REQUEST_METHOD']
-            && $_SERVER['REQUEST_METHOD'] !== "OPTIONS"
-          ){
-            return [
-              'error_code' => 405
-            ];
-          }
-          return $route;
+    foreach($GLOBALS['routes'] as $route){
+      if($route['route'] === $_SERVER['REQUEST_URI']){
+        if(
+          $_SERVER['REQUEST_METHOD'] !== $route['REQUEST_METHOD']
+          && $_SERVER['REQUEST_METHOD'] !== "OPTIONS"
+        ){
+          return [
+            'error_code' => 405
+          ];
         }
+        return $route;
       }
-    } else if(preg_match("/^view\/(.*)$/", $_GET['route'], $match)){
-      foreach($GLOBALS['views'] as $view){
-        if($view['route'] === $match[1]){
-          return $view;
-        }
+    }
+    foreach($GLOBALS['views'] as $view){
+      if($view['route'] === $_SERVER['REQUEST_URI']){
+        return $view;
       }
     }
     return [

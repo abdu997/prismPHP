@@ -51,9 +51,9 @@ $GLOBALS['auth_groups'] =  [
     'condition' => true,
   ],
 ];
-$GLOBALS['api'] =  [
+$GLOBALS['routes'] =  [
   [
-    'route' => 'public/test',
+    'route' => '/api/test',
     'callback' => 'ExampleController::example',
     'auth' => ['public'],
     'REQUEST_METHOD' => 'GET'
@@ -61,8 +61,13 @@ $GLOBALS['api'] =  [
 ];
 $GLOBALS['views'] =  [
   [
-    'route' => 'public/hello',
+    'route' => '/',
     'filename' => 'hello_world.html',
     'auth' => ['public'],
   ]
 ];
+
+/**
+ * Functions to run before App runs
+ *
+ */

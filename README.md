@@ -16,14 +16,14 @@ You will also need to have these Apache .htaccess rules set in the root folder o
 
 ```HTACCESS
 RewriteEngine On
-RewriteRule ^api/(.*) php/?route=api/$1 [NC,L]
+RewriteRule ^(.*)$ php/index.php [NC,L]
 ```
 
 You will need to use this rule for exemptions.
 
 ```HTACCESS
 RewriteCond %{ENV:REDIRECT_STATUS} !=200
-RewriteRule ^(.*) php/?route=view/$1 [NC,L]
+RewriteRule ^(.*) $1 [NC,L]
 ```
 
 ## Config
