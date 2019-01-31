@@ -148,7 +148,9 @@ class Router
       error_log($errmsg);
     }
     $timestamp = DB::timestamp();
-    DB::query("INSERT INTO php_errors(errno, errstr, errfile, errline, timestamp) VALUES('?', '?', '?', '?', '?')", [$errno, $errstr, $errfile, $errline, $timestamp]);
+    if($GLOBALS['error_reporting']){
+      DB::query("INSERT INTO php_errors(errno, errstr, errfile, errline, timestamp) VALUES('?', '?', '?', '?', '?')", [$errno, $errstr, $errfile, $errline, $timestamp]);
+    }
     print json_encode(
       [
         'status' => 'error',

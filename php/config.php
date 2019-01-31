@@ -11,6 +11,7 @@ $GLOBALS['dep'] =  [
 ];
 
 //DB
+$GLOBALS['error_reporting'] = false;
 $GLOBALS['DB'] =  [
   [
     'condition' => $_SERVER['SERVER_NAME'] === "localhost",
@@ -32,7 +33,6 @@ $GLOBALS['from_name'] =  "";
 $GLOBALS['logo_url'] =  "";
 $GLOBALS['primary_colour'] = "";
 $GLOBALS['secondary_colour'] = "";
-
 
 
 // Twilio
