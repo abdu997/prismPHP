@@ -34,7 +34,6 @@ $GLOBALS['logo_url'] =  "";
 $GLOBALS['primary_colour'] = "";
 $GLOBALS['secondary_colour'] = "";
 
-
 // Twilio
 $GLOBALS['sid'] =  "";
 $GLOBALS['token'] =  "";
