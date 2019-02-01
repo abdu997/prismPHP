@@ -53,15 +53,13 @@ class Router
   }
 
   /**
-   * Runs the router config and fetches the current route. If a router error
-   * code exists, it is then set as the http response code and exits the
-   * operation. Loops through the auth groups defined in the config. If the auth
-   * group condition is not met and does not correspond to the route auth group,
-   * an access denied response is retuned. If the request type is api, the
-   * callback from the controller is returned in a success json result array. If the request type is
-   * view, the file contents from the Views folder is returned. Changes response
-   * content type based on the request type, if api/ is in the URI,
-   * application/json, otherwise it will be text/html.
+   * Runs the router config and fetches the current route. Loops through the auth
+   * groups defined in the config. If the auth group condition is not met and
+   * does not correspond to the route auth group, an access denied response is
+   * retuned. If the request type is api, the callback from the controller is
+   * returned in a success json result array with a content-type header set as
+   * application/json. If the request type is view, the file contents from the
+   * Views folder is returned with a content-type header set as text/html.
    *
    * @return string View or api response.
    */
@@ -69,14 +67,11 @@ class Router
   {
     self::config();
     $route = self::checkRouteExists();
-    if(isset($route['error_code'])){
-      http_response_code($route['error_code']);
-      exit();
-    }
     foreach($GLOBALS['auth_groups'] as $auth_group){
       if(in_array($auth_group['auth_ref'], $route['auth']) && $auth_group['condition']){
-          http_response_code(200);
-          if(preg_match("/^\/api\/(.*)$/", $_SERVER['REQUEST_URI'])){
+        http_response_code(200);
+        switch($route['type']){
+          case "api":
             $callback = call_user_func("Controllers\\".$route['callback']);
             header("Content-type: application/json");
             return json_encode(
@@ -86,11 +81,12 @@ class Router
                 'result' => $callback
               ]
             );
-          } else {
+          default:
             header("Content-type: text/html");
             return file_get_contents("Views/".$route['filename']);
-          }
+        }
       }
+      continue;
     }
     return json_encode(['status' => 'error', 'message' => 'Access Denied']);
   }
@@ -108,25 +104,20 @@ class Router
   {
     foreach($GLOBALS['routes'] as $route){
       if($route['route'] === $_SERVER['REQUEST_URI']){
-        if(
-          $_SERVER['REQUEST_METHOD'] !== $route['REQUEST_METHOD']
-          && $_SERVER['REQUEST_METHOD'] !== "OPTIONS"
-        ){
-          return [
-            'error_code' => 405
-          ];
+        if($route['type'] === "api"){
+          if(
+            $_SERVER['REQUEST_METHOD'] !== $route['REQUEST_METHOD'] &&
+            $_SERVER['REQUEST_METHOD'] !== "OPTIONS"
+          ){
+            http_response_code(405);
+            exit();
+          }
         }
         return $route;
       }
     }
-    foreach($GLOBALS['views'] as $view){
-      if($view['route'] === $_SERVER['REQUEST_URI']){
-        return $view;
-      }
-    }
-    return [
-      'error_code' => 404
-    ];
+    http_response_code(404);
+    exit();
   }
 
   /**

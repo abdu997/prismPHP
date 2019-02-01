@@ -52,18 +52,18 @@ $GLOBALS['auth_groups'] =  [
 ];
 $GLOBALS['routes'] =  [
   [
-    'route' => '/api/test',
-    'callback' => 'ExampleController::example',
+    'type' => 'view',
+    'route' => '/',
     'auth' => ['public'],
+    'filename' => 'hello_world.html',
+  ],
+  [
+    'type' => 'api',
+    'route' => '/api/test',
+    'auth' => ['public'],
+    'callback' => 'ExampleController::example',
     'REQUEST_METHOD' => 'GET'
   ],
-];
-$GLOBALS['views'] =  [
-  [
-    'route' => '/',
-    'filename' => 'hello_world.html',
-    'auth' => ['public'],
-  ]
 ];
 
 /**
