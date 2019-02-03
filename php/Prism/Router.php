@@ -40,13 +40,6 @@ class Router
    */
   private static function loadDep()
   {
-    array_push(
-      $GLOBALS['dep'],
-      'Prism/vendor/twilio-php-master/Twilio/autoload.php',
-      'Prism/vendor/PHPMailer/src/Exception.php',
-      'Prism/vendor/PHPMailer/src/PHPMailer.php',
-      'Prism/vendor/PHPMailer/src/SMTP.php'
-    );
     foreach($GLOBALS['dep'] as $dep){
       require $dep;
     }
