@@ -158,6 +158,19 @@ $GLOBALS['routes'] =  [
 ];
 ```
 
+*Dynamic API Routes*
+If you would like to have dynamic values in the route, you can use regex closing captures to capture the values consistent with your pattern. The values are then initated in the `$_GET` supervariable array.
+
+```php
+[
+  'type' => 'api',
+  'route' => '/^\/api\/customer\/(.*)$/', //will capture all values in the URI following /api/customer/
+  'auth' => ['public'],
+  'callback' => 'ExampleController::example',
+  'REQUEST_METHOD' => 'GET'
+],
+```
+
 **Views Routes**
 Views requests are requests where the address contains `/view/` (i.e `http://example.com/view/viewName`). Everything after `/view/` would be considered the route. `filename` is the path to the UI file relative to `php/Views`. `auth` is an array that contains the `auth_ref`s that are granted privileges to the route resource; you may have multiple `auth_ref`s in this array. The view routes are in the `routes` array, similar to the api routes, it is your responsibility to ensure that the schema is consistent with the route's type.  
 
@@ -166,13 +179,26 @@ Views response `content-type` header is set to `text/html`.
 $GLOBALS['routes'] =  [
   [
     'type' => 'view', // Must defined so as to have the content-type header set to text/html
-    'route' => 'public/hello', // The url here would look like -- http://example.com/view/public/hello
-    'filename' => 'hello_world.html', // this can be a path relative to the php/Views folder
+    'route' => '/', // The url here would look like -- http://example.com/
     'auth' => ['public'], // This an array for a reason, you may have multiple auth groups for a route
+    'filename' => 'index.html', // this can be a path relative to the php/Views folder
   ],
   ...
 ];
 ```
+
+*Dynamic View Routes*
+If you would like to have dynamic values in the route, you can use regex closing captures to capture the values consistent with your pattern. The values are then initiated in the `$_GET` supervariable array and you may use the references to the closing captures in the `filename` value. The example below uses a pattern that marks all requests to the JS, CSS, Vendor and IMG folders public. For example, a request URI css/all.min.css, would be accepted and and the file will then be served.
+
+```php
+[
+  'type' => 'view',
+  'route' => '/^\/(js|css|vendor|img)\/(.*)/',
+  'auth' => ['public'],
+  'filename' => '/$1/$2',
+],
+```
+
 ## Project Bundler
 Essentially, the bundler is a concatenator that places all of the project's code into the `php/index.php` folder. PrismPHP offers two bundlers. **You can only have one running at time**
 ### DEV Bundler

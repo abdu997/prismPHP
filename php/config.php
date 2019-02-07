@@ -59,14 +59,20 @@ $GLOBALS['routes'] =  [
     'type' => 'view',
     'route' => '/',
     'auth' => ['public'],
-    'filename' => 'hello_world.html',
+    'filename' => 'index.html',
+  ],
+  [
+    'type' => 'view',
+    'route' => '/^\/(js|css|mp4|vendor|img)\/(.*)/',
+    'auth' => ['public'],
+    'filename' => '/$1/$2',
   ],
   [
     'type' => 'api',
-    'route' => '/api/test',
+    'route' => '/^\/api\/(.*)$/',
     'auth' => ['public'],
     'callback' => 'ExampleController::example',
-    'REQUEST_METHOD' => 'GET'
+    'REQUEST_METHOD' => 'POST'
   ],
 ];
 
