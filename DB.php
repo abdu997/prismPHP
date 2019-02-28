@@ -126,7 +126,7 @@ class DB
     if(mysqli_query(self::connect(), $sql)){
       return ['status'=>'success'];
     } else {
-      trigger_error(mysqli_error(self::connect()), E_ERROR);
+      trigger_error(mysqli_error(self::connect()), E_USER_ERROR);
       return ['status'=>'error', 'message'=> mysqli_error(self::connect())];
     }
   }
@@ -146,7 +146,7 @@ class DB
     if(mysqli_query(self::connect(), $sql)){
       return mysqli_insert_id(self::connect());
     } else {
-      trigger_error(mysqli_error(self::connect()), E_ERROR);
+      trigger_error(mysqli_error(self::connect()), E_USER_ERROR);
       return ['status'=>'error', 'message'=> mysqli_error(self::connect())];
     }
   }
@@ -167,12 +167,12 @@ class DB
     $result = mysqli_query(self::connect(), $sql);
     if($result){
       $output = [];
-      while($row = mysqli_fetch_array($result)){
+      while($row = mysqli_fetch_assoc($result)){
         $output[] = $row;
       }
       return $output;
     } else {
-      trigger_error(mysqli_error(self::connect()), E_ERROR);
+      trigger_error(mysqli_error(self::connect()), E_USER_ERROR);
       return ['status'=>'error', 'message'=> mysqli_error(self::connect())];
     }
   }
@@ -180,7 +180,8 @@ class DB
   /**
    * Runs a select sql query, preferably a select query. If successful,
    * a result row is then returned in an array schema. If the query was
-   * unsuccessful, the mysqli_error is returned.
+   * unsuccessful, the mysqli_error is returned. Temporary loop variables are
+   * unset as recommended
    *
    * @param  string $sql Sql query
    * @return array       Request status and message.
@@ -192,7 +193,14 @@ class DB
     }
     $result = mysqli_query(self::connect(), $sql);
     if($result){
-      return mysqli_fetch_array($result);
+      $row = mysqli_fetch_assoc($result);
+      foreach($row as $key => $value){
+        if(preg_match("/a:(.*):/", $value)){
+          $row[$key] = unserialize($value);
+        }
+      }
+      unset($key, $value);
+      return $row;
     } else {
       trigger_error(mysqli_error(self::connect()));
       return ['status'=>'error', 'message'=> mysqli_error(self::connect())];
