@@ -17,8 +17,6 @@ class Router
    */
   public static function config()
   {
-    session_start();
-    DB::sanitize();
     DB::createErrorLog();
     self::loadDep();
     if(isset(apache_request_headers()['Origin']) && in_array(apache_request_headers()['Origin'], $GLOBALS['allowed_hostnames'])){
@@ -41,7 +39,7 @@ class Router
   private static function loadDep()
   {
     foreach($GLOBALS['dep'] as $dep){
-      require $dep;
+      require_once $dep;
     }
   }
 
@@ -93,7 +91,7 @@ class Router
       }
       continue;
     }
-    return json_encode(['status' => 'error', 'message' => 'Access Denied']);
+    trigger_error('Access Denied');
   }
 
   /**
@@ -155,6 +153,7 @@ class Router
     if($GLOBALS['error_reporting']){
       DB::query("INSERT INTO php_errors(errno, errstr, errfile, errline, timestamp) VALUES('?', '?', '?', '?', '?')", [$errno, $errstr, $errfile, $errline, $timestamp]);
     }
+    header('Content-Type: application/json');
     print json_encode(
       [
         'status' => 'error',

@@ -3,7 +3,7 @@ $index = fopen("../../index.php", "c") or die("Unable to open file!");
 if(!ftruncate($index, 0)){
   die("\033[31mERR: Truncate Failed\033[0m\n");
 }
-include '../../config.php';
+require_once '../../config.php';
 $folders = $GLOBALS['folders'];
 array_push($folders, 'Prism');
 $app = "<?// PROD INDEX";

@@ -59,25 +59,6 @@ class DB
   }
 
   /**
-   * Sanitizes first and second dimension values of the post array.
-   *
-   */
-  public static function sanitize()
-  {
-    if($_POST){
-      foreach($_POST as $key => $value){
-        if(is_array($value)){
-          foreach($value as $sub_key => $sub_value){
-            $value[$sub_key] = mysqli_real_escape_string(self::connect(), $value[$sub_key]);
-          }
-        } else {
-          $_POST[$key] = mysqli_real_escape_string(self::connect(), $_POST[$key]);
-        }
-      }
-    }
-  }
-
-  /**
    * Retrieves timestamp in UTC format.
    *
    * @return string Current timestamp
