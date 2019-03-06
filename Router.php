@@ -9,7 +9,7 @@ namespace Prism;
 class Router
 {
   /**
-   * Router config settings. Starts session. Calls santization of post values.
+   * Router config settings.
    * Loads Dependencies. If an external request hostname is in the allowed
    * hostnames list from the prism config.php, then includes the origin in
    * Access Control Allow Origin. Defines set error handler. Defines timezone.
@@ -50,7 +50,7 @@ class Router
    * retuned. If the request type is api, the callback from the controller is
    * returned in a success json result array with a content-type header set as
    * application/json. If the request type is view, the file contents from the
-   * Views folder is returned after mime_content_type determines its mime type, if the mime type is text/plain, the file extension is used to query the mime type from $mime_types as mime_content_type fails to pick the file's appropriate mime type by assigning it 'text/plain', content-type header is then set as the appropriate mime-type, if extension is not in the $mime_types array, the default will be text/plain.
+   * Views folder is returned after mime_content_type determines its mime type, if the mime type is text/plain, the file extension is used to query the mime type from $mime_types as mime_content_type fails to pick the file's appropriate mime type by assigning it 'text/plain', content-type header is then set as the appropriate mime-type, if extension is not in the $mime_types array, the default will be text/plain. For view requests, php files will be evaluated as php scripts, non-php file contents will be retrieved. If authentication fails for view requests and an auth_fail_redirect is set, then the request will be redirected to the auth_fail_redirect value.
    *
    * @return string View or api response.
    */
@@ -84,12 +84,20 @@ class Router
                 }
             }
             header("Content-type: ".$MIME);
-            return file_get_contents($filename);
+            if(substr($filename, -4) === ".php"){
+              require($filename);
+              return;
+            } else {
+              return file_get_contents($filename);
+            }
           default:
             trigger_error("Invalid route type");
         }
       }
       continue;
+    }
+    if($route['type'] === "view" && isset($route['auth_fail_redirect'])){
+      header('Location: '.$route['auth_fail_redirect']);
     }
     trigger_error('Access Denied');
   }
