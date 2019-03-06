@@ -19,9 +19,9 @@ class Router
   {
     DB::createErrorLog();
     self::loadDep();
-    if(isset(apache_request_headers()['Origin']) && in_array(apache_request_headers()['Origin'], $GLOBALS['allowed_hostnames'])){
+    if(isset($_SERVER['Origin']) && in_array($_SERVER['Origin'], $GLOBALS['allowed_hostnames'])){
       header(
-        "Access-Control-Allow-Origin: ".apache_request_headers()['Origin']
+        "Access-Control-Allow-Origin: ".$_SERVER['Origin']
       );
     }
     date_default_timezone_set($GLOBALS['timezone']);
