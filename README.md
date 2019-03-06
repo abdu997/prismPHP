@@ -182,6 +182,7 @@ $GLOBALS['routes'] =  [
     'route' => '/', // The url here would look like -- http://example.com/
     'auth' => ['public'], // This an array for a reason, you may have multiple auth groups for a route
     'filename' => 'index.html', // this can be a path relative to the php/Views folder
+    'auth_fail_redirect' => '/403' // If authentication fails it redirect to this URI
   ],
   ...
 ];
