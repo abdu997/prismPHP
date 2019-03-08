@@ -105,10 +105,10 @@ class DB
       $sql = self::queryBuilder($sql, $values);
     }
     if(mysqli_query(self::connect(), $sql)){
-      return ['status'=>'success'];
+      return true;
     } else {
+      return false;
       trigger_error(mysqli_error(self::connect()), E_USER_ERROR);
-      return ['status'=>'error', 'message'=> mysqli_error(self::connect())];
     }
   }
 
@@ -127,8 +127,8 @@ class DB
     if(mysqli_query(self::connect(), $sql)){
       return mysqli_insert_id(self::connect());
     } else {
+      return false;
       trigger_error(mysqli_error(self::connect()), E_USER_ERROR);
-      return ['status'=>'error', 'message'=> mysqli_error(self::connect())];
     }
   }
 
@@ -153,8 +153,8 @@ class DB
       }
       return $output;
     } else {
+      return false;
       trigger_error(mysqli_error(self::connect()), E_USER_ERROR);
-      return ['status'=>'error', 'message'=> mysqli_error(self::connect())];
     }
   }
 
@@ -183,8 +183,8 @@ class DB
       unset($key, $value);
       return $row;
     } else {
+      return false;
       trigger_error(mysqli_error(self::connect()));
-      return ['status'=>'error', 'message'=> mysqli_error(self::connect())];
     }
   }
 
